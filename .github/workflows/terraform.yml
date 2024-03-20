@@ -1,0 +1,78 @@
+name: Terraform deployment
+on: [pull_request,workflow_dispatch]
+
+jobs:
+  terraform-plan:
+    name: Terraform plan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout project
+        uses: actions/checkout@v4
+
+      - name: Setup terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.1.7"
+
+      - name: Terraform fmt
+        id: fmt
+        run: terraform fmt -check
+        continue-on-error: true
+
+      - name: Terraform init
+        id: init
+        run: |
+          terraform init \
+            -backend-config="resource_group_name=terraform_resource_group" \
+            -backend-config="storage_account_name=terraform_storage_account" \
+            -backend-config="container_name=tfstate" \
+            -backend-config="key=terraform.tfstate"
+
+      - name: Terraform validate
+        id: validate
+        run: terraform validate -no-color
+
+      - name: Set variables
+        shell: bash
+        env:
+          tfvars: ${{ secrets.tfvars }}
+        run: |
+          echo "$tfvars" >> terraform.tfvars
+
+      - name: Terraform plan
+        id: plan
+        run: terraform plan -var-file="terraform.tfvars" -no-color
+
+  terraform-apply:
+    name: Terraform apply
+    runs-on: ubuntu-latest
+    environment: manual
+    needs: terraform-plan
+    steps:
+      - name: Checkout project
+        uses: actions/checkout@v4
+
+      - name: Setup terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.1.7"
+
+      - name: Terraform init
+        id: init
+        run: |
+          terraform init \
+            -backend-config="resource_group_name=terraform_resource_group" \
+            -backend-config="storage_account_name=terraform_storage_account" \
+            -backend-config="container_name=tfstate" \
+            -backend-config="key=terraform.tfstate"
+
+      - name: Set variables
+        shell: bash
+        env:
+          tfvars: ${{ secrets.tfvars }}
+        run: |
+          echo "$tfvars" >> terraform.tfvars
+
+      - name: Terraform apply
+        id: plan
+        run: terraform apply -var-file="terraform.tfvars" -no-color

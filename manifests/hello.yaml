@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello
+  labels:
+    app: hello
+spec:
+  replicas: 10
+  selector:
+    matchLabels:
+      app: hello
+  template:
+    metadata:
+      name: hello
+      labels:
+        app: hello
+    spec:
+#      nodeSelector:
+#        "kubernetes.io/os": windows
+      containers:
+        - image: vadimmmreg.azurecr.io/vadimmmreg/hello:latest
+          name: hello
