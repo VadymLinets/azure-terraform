@@ -145,8 +145,8 @@ resource "azurerm_role_assignment" "aks_identity_acr_pull_role" {
 #  yaml_body  = file(each.value)
 #}
 
-resource "helm_release" "example" {
-  name       = "my-local-chart"
+resource "helm_release" "hello" {
+  name       = "hello"
   chart      = "./hello"
 
   values = [

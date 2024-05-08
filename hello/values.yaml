@@ -43,6 +43,7 @@ autoscaling:
   # targetMemoryUtilizationPercentage: 80
 
 nodeSelector: {}
+#  "kubernetes.io/os": windows
 
 tolerations: []
 
