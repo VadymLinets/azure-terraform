@@ -103,7 +103,7 @@ resource "azurerm_kubernetes_cluster_node_pool" "windows_node_pool" {
 }
 
 resource "azurerm_container_registry" "acr" {
-  name                = "vadimmmreg"
+  name                = "vadimhelloreg"
   resource_group_name = azurerm_resource_group.aks_resource_group.name
   location            = azurerm_resource_group.aks_resource_group.location
   sku                 = var.acr_sku

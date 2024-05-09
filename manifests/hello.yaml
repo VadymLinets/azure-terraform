@@ -18,5 +18,5 @@ spec:
 #      nodeSelector:
 #        "kubernetes.io/os": windows
       containers:
-        - image: vadimmmreg.azurecr.io/vadimmmreg/hello:latest
+        - image: vadimhelloreg.azurecr.io/vadimmmreg/hello:latest
           name: hello
