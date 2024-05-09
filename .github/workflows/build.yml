@@ -24,4 +24,4 @@ jobs:
         with:
           push: true
           file: ./dotnet/Dockerfile
-          tags: ${{ secrets.acr_registry }}/vadimhelloreg/hello:latest,${{ secrets.acr_registry }}/vadimmmreg/hello:$GITHUB_RUN_NUMBER
+          tags: ${{ secrets.acr_registry }}/vadimhelloreg/hello:latest,${{ secrets.acr_registry }}/vadimhelloreg/hello:$GITHUB_RUN_NUMBER
